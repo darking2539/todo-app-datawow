@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import { ProgressCard, TaskCard } from "./components"
+import { useState, useEffect } from 'react';
+import './App.css';
+import { ProgressCard, TaskCard } from "./components";
+import { CallGetDataList, CallDeleteData, CallAddData, CallEditData } from './API'
+
 
 function App() {
 
@@ -17,55 +19,35 @@ function App() {
   const checkHandle = (id: string) => {
 
     var taskDataBuffer: any = taskData;
-
     taskData.map((value: any, index: number) => {
       if (value.id === id) {
-        taskDataBuffer[index].completed = !taskDataBuffer[index].completed
+        var jsonParam: any = { id: id, title: taskDataBuffer[index].title, completed: !taskDataBuffer[index].completed };
+        CallEditData(jsonParam).then(() => {
+          fetchDataFromAPI();
+        })
       }
     })
-
-    setTaskData([...taskDataBuffer]);
   }
 
   const fetchDataFromAPI = () => {
 
-    const initData: any = {
-      "todos": [
-        {
-          "id": "5fe3f4ca-193c-4170-83c1-cb5a19908601",
-          "title": "Buy food for dinner",
-          "completed": true
-        },
-        {
-          "id": "f619466c-a016-4281-b584-7db2795d103d",
-          "title": "Call Marie at 10.00 PM",
-          "completed": false
-        },
-        {
-          "id": "5fe3f4ca-193c-4170-83c1-cb5a19908602",
-          "title": "Write a react blog post",
-          "completed": false
-        }
-      ]
-    }
-
-    setTaskData(initData.todos);
+    CallGetDataList().then((resp:any)=> {
+      setTaskData(resp?.data);
+    })
+    
   }
 
-  const initData = () => {
+  const initStateData = () => {
     setDropDownValue({ label: "All", value: "All" });
   }
 
   const handlerAddKeyPress = (evt: any) => {
     if (evt.key === "Enter") {
-      var taskDataBuffer: any = taskData;
-      taskDataBuffer.push({
-        "id": generateUUID(),
-        "title": addValue,
-        "completed": false
-      });
-      setTaskData([...taskDataBuffer]);
-      setAddValue(""); //reset
+      var jsonParam: any = { id: generateUUID(), title: addValue };
+      CallAddData(jsonParam).then(()=> {
+        fetchDataFromAPI();
+        setAddValue(""); //reset
+      })
     };
   }
 
@@ -84,16 +66,11 @@ function App() {
     setTaskData([...taskDataBuffer]);
   }
 
-  const deleteHandle = (id: any) => {
+  const deleteHandle = (id: string) => {
 
-    var taskDataBuffer: any = taskData;
-    taskData.map((value: any, index: number) => {
-      if (value.id === id) {
-        taskDataBuffer.splice(index, 1)
-      }
-    })
-
-    setTaskData([...taskDataBuffer]);
+    CallDeleteData(id).then(()=> {
+      fetchDataFromAPI();
+    });
   }
 
   const editHandle = (id: any, valueChange: string) => {
@@ -125,8 +102,10 @@ function App() {
     var taskDataBuffer: any = taskData;
     taskData.map((value: any, index: number) => {
       if (value.id === id) {
-        taskDataBuffer[index].editStatus = false;
-        taskDataBuffer[index].popupStatus = false;
+        var jsonParam: any = { id: id, title: taskDataBuffer[index].title, completed: taskDataBuffer[index].completed };
+        CallEditData(jsonParam).then(() => {
+          fetchDataFromAPI();
+        })
       }
     })
 
@@ -151,12 +130,8 @@ function App() {
 
   useEffect(() => {
     fetchDataFromAPI();
-    initData();
+    initStateData();
   }, [])
-
-  // useEffect(() => {
-  //   console.log(dropDownValue);
-  // }, [dropDownValue])
 
   return (
     <div style={{ padding: "70px 10vw", backgroundColor: "#F5F5F5", borderRadius: "20px", width: "70vw", maxWidth: "720px", zIndex: -10 }}>

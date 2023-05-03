@@ -38,7 +38,7 @@ export default function TaskChip(props: any) {
             {editStatus && (
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", padding: "15px 20px", marginTop: "20px", backgroundColor: "#FFFFFF", borderRadius: "9999px" }}>
                     <input type="text" placeholder="Add your to do..." style={{ border: "none", outline: "none", fontWeight: 500, fontSize: '18px', width: "100%" }} value={title} onChange={(evt: any) => editHandle(id, evt.target.value)} ></input>
-                    <button style={{color: "#FFFFFF", backgroundColor: "#585292", border: "none", padding: "0px 20px", borderRadius: "999px", height: "30px"}} onClick={(evt: any) => editSave(id, evt)}>Save</button>
+                    <button style={{color: "#FFFFFF", backgroundColor: "#585292", border: "none", padding: "0px 20px", borderRadius: "999px", height: "30px", cursor: "pointer"}} onClick={(evt: any) => editSave(id, evt)}>Save</button>
                 </div>
             )}
         </div>
