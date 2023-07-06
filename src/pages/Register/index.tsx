@@ -56,7 +56,7 @@ const RegisterPage = () => {
   return (
     <div className="login-page">
       <form onSubmit={handleFormSubmit}>
-        <h2>Login</h2>
+        <h2>Register</h2>
         <div className="form-group">
           <label htmlFor="username" style={{ color: "black" }}>Username</label>
           <input
