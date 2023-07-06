@@ -19,6 +19,10 @@ export default function ProgressCard(props: any) {
     
     const percentageCalculate = () => {
         
+        if (taskData.length === 0) {
+            return 0
+        }
+        
         var count = 0;
         taskData.map((value: any) => {
             if (value?.completed) {
