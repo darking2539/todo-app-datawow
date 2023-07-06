@@ -88,8 +88,8 @@ const RegisterPage = () => {
           />
         </div>
         <div className="button-group">
-          <button type="submit">Login</button>
-          <button type="button" onClick={handleRegisterClick} style={{ backgroundColor: "red", marginLeft: "5px" }}>Register</button>
+          <button type="submit">Submit</button>
+          <button type="button" onClick={handleRegisterClick} style={{ backgroundColor: "red", marginLeft: "5px" }}>Back</button>
         </div>
       </form>
     </div>
