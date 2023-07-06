@@ -50,7 +50,7 @@ const RegisterPage = () => {
   };
 
   const handleRegisterClick = () => {
-    history("/register")
+    history("/logib")
   };
 
   return (
