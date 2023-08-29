@@ -10,7 +10,7 @@ const WebRoutes = (props:any) =>{
 
         <Route path="/" element={<Navigate to="/todos" />} />
         <Route path="/todos"  element={<ContentLayout children={<TodosPage/>}  />} />
-        <Route path="/login" element={<LoginPage/>} />
+        {/* <Route path="/login" element={<LoginPage/>} /> */}
         <Route path="/register" element={<RegisterPage/>} />
 
       </Routes>
