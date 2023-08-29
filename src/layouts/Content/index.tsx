@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CallChangePassword } from '../../API';
+import { CallChangePassword, CallGetUserDetail } from '../../API';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
 import "./index.css"
@@ -41,8 +41,8 @@ const ContentLayout = (props: any) => {
   const history = useNavigate();
 
   const LogoutHandle = () => {
-    Cookies.remove("jwtToken")
-    history("/")
+    Cookies.remove("jwtToken");
+    history("/");
   }
 
   const changePasswordHandle = () => {
@@ -87,17 +87,21 @@ const ContentLayout = (props: any) => {
         })
       })
     })
-
   }
 
   useEffect(() => {
 
     console.log("boss", Cookies.get('jwtToken'))
-    if (!Cookies.get('jwtToken')) {
-      window.location.replace(`${baseAPIURL}/auth/login`);
-    }
+    // if (!Cookies.get('jwtToken')) {
+    //   window.location.replace(`${baseAPIURL}/auth/login`);
+    // }
 
-  }, [])
+    CallGetUserDetail().then((resp: any) => {
+      console.log(resp);
+    }).catch((err: any) => {
+      console.log(err);
+      window.location.href = `${baseAPIURL}/auth/login`
+    })}, [])
 
 
   return (

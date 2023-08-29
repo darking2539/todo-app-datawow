@@ -129,3 +129,12 @@ export const CallChangePassword = (param: changePasswordParam) => {
         }
     });
 };
+
+export const CallGetUserDetail = () => {
+
+    return AxiosFetch({
+        method: 'GET',
+        withCredentials: true,
+        url: `${baseAPIURL}/auth/getuser`,
+    });
+};
