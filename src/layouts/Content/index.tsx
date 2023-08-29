@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { CallChangePassword, CallGetUserDetail } from '../../API';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
 import "./index.css"
 import Swal from 'sweetalert2';
-import Cookies from 'js-cookie';
 import { baseAPIURL } from '../../constant';
 
 const Fab = (props: any) => {
@@ -38,11 +36,8 @@ const ContentLayout = (props: any) => {
 
   const { children } = props;
 
-  const history = useNavigate();
-
   const LogoutHandle = () => {
-    Cookies.remove("jwtToken");
-    history("/");
+    window.location.href = `${baseAPIURL}/auth/logout?nocache=` + (new Date()).getTime();
   }
 
   const changePasswordHandle = () => {
@@ -90,11 +85,6 @@ const ContentLayout = (props: any) => {
   }
 
   useEffect(() => {
-
-    console.log("boss", Cookies.get('jwtToken'))
-    // if (!Cookies.get('jwtToken')) {
-    //   window.location.replace(`${baseAPIURL}/auth/login`);
-    // }
 
     CallGetUserDetail().then((resp: any) => {
       console.log(resp);
