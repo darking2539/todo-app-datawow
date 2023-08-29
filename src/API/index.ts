@@ -17,6 +17,7 @@ export const CallGetDataList = () => {
 
     return AxiosFetch({
         method: 'GET',
+        withCredentials: true,
         headers: {
             Authorization: `Bearer ${token}`
         },
@@ -30,6 +31,7 @@ export const CallDeleteData = (id: string) => {
 
     return AxiosFetch({
         method: 'DELETE',
+        withCredentials: true,
         headers: {
             Authorization: `Bearer ${token}`
         },
@@ -44,6 +46,7 @@ export const CallAddData = (param: DataParam) => {
     return AxiosFetch({
         method: 'POST',
         url: `${baseAPIURL}/todos/submit`,
+        withCredentials: true,
         headers: {
             Authorization: `Bearer ${token}`
         },
@@ -62,6 +65,7 @@ export const CallEditData = (param: DataParam) => {
     var token = localStorage.getItem("token")
 
     return AxiosFetch({
+        withCredentials: true,
         method: 'POST',
         url: `${baseAPIURL}/todos/submit`,
         headers: {
@@ -85,12 +89,8 @@ interface userParam {
 
 export const CallLogin = (param: userParam) => {
     return AxiosFetch({
-        method: 'POST',
+        method: 'GET',
         url: `${baseAPIURL}/auth/login`,
-        data: {
-            username: param?.username,
-            password: param?.password
-        }
     });
 };
 

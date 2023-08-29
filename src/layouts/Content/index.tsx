@@ -5,6 +5,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
 import "./index.css"
 import Swal from 'sweetalert2';
+import Cookies from 'js-cookie';
+import { baseAPIURL } from '../../constant';
 
 const Fab = (props: any) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -39,8 +41,8 @@ const ContentLayout = (props: any) => {
   const history = useNavigate();
 
   const LogoutHandle = () => {
-    localStorage.removeItem("token");
-    history("/login")
+    Cookies.remove("jwtToken")
+    history("/")
   }
 
   const changePasswordHandle = () => {
@@ -90,8 +92,9 @@ const ContentLayout = (props: any) => {
 
   useEffect(() => {
 
-    if (!localStorage.getItem("token")) {
-      history("/login")
+    console.log("boss", Cookies.get('jwtToken'))
+    if (!Cookies.get('jwtToken')) {
+      window.location.replace(`${baseAPIURL}/auth/login`);
     }
 
   }, [])
