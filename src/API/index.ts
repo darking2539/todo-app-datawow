@@ -87,7 +87,7 @@ interface userParam {
     email: string;
 }
 
-export const CallLogin = (param: userParam) => {
+export const CallLogin = () => {
     return AxiosFetch({
         method: 'GET',
         url: `${baseAPIURL}/auth/login`,

@@ -20,11 +20,8 @@ const LoginPage = () => {
 
   const handleFormSubmit = (e: any) => {
     e.preventDefault();
-    var jsonParam: any = {
-      username: username,
-      password: password
-    }
-    CallLogin(jsonParam).then((resp: any)=> {
+
+    CallLogin().then((resp: any)=> {
       localStorage.setItem("token", resp.data.token)
       history("/todos")
     }).catch((err: any)=> {
