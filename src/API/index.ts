@@ -1,5 +1,8 @@
 import axios from "axios";
 import { baseAPIURL } from '../constant';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 const AxiosFetch = axios.create({});
 
@@ -13,7 +16,7 @@ interface DataParam {
 
 export const CallGetDataList = () => {
 
-    var token = localStorage.getItem("token")
+    var token = cookies.get('jwtToken')
 
     return AxiosFetch({
         method: 'GET',
@@ -27,7 +30,7 @@ export const CallGetDataList = () => {
 
 export const CallDeleteData = (id: string) => {
 
-    var token = localStorage.getItem("token")
+    var token = cookies.get('jwtToken')
 
     return AxiosFetch({
         method: 'DELETE',
@@ -41,7 +44,7 @@ export const CallDeleteData = (id: string) => {
 
 export const CallAddData = (param: DataParam) => {
     
-    var token = localStorage.getItem("token")
+    var token = cookies.get('jwtToken')
     
     return AxiosFetch({
         method: 'POST',
@@ -62,7 +65,7 @@ export const CallAddData = (param: DataParam) => {
 
 export const CallEditData = (param: DataParam) => {
     
-    var token = localStorage.getItem("token")
+    var token = cookies.get('jwtToken')
 
     return AxiosFetch({
         withCredentials: true,
@@ -114,7 +117,7 @@ interface changePasswordParam {
 
 export const CallChangePassword = (param: changePasswordParam) => {
 
-    var token = localStorage.getItem("token")
+    var token = cookies.get('jwtToken')
 
     return AxiosFetch({
         method: 'POST',
@@ -132,9 +135,14 @@ export const CallChangePassword = (param: changePasswordParam) => {
 
 export const CallGetUserDetail = () => {
 
+    var token = cookies.get('jwtToken')
+
     return AxiosFetch({
         method: 'GET',
         withCredentials: true,
         url: `${baseAPIURL}/auth/getuser`,
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
     });
 };

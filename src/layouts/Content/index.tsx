@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
+import queryString  from 'query-string';
 import { CallChangePassword, CallGetUserDetail } from '../../API';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
 import "./index.css"
 import Swal from 'sweetalert2';
 import { baseAPIURL } from '../../constant';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 const Fab = (props: any) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -85,14 +89,17 @@ const ContentLayout = (props: any) => {
   }
 
   useEffect(() => {
-
+  
+    var param = queryString.parse(location.search)
+    cookies.set('jwtToken', param.jwtToken, { path: '/' })
+    console.log(cookies.get('jwtToken'));
+    
     CallGetUserDetail().then((resp: any) => {
       console.log(resp);
     }).catch((err: any) => {
       console.log(err);
       window.location.href = `${baseAPIURL}/auth/login`
     })}, [])
-
 
   return (
     <div>
