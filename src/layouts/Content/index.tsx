@@ -41,6 +41,7 @@ const ContentLayout = (props: any) => {
   const { children } = props;
 
   const LogoutHandle = () => {
+    cookies.remove("jwtToken");
     window.location.href = `${baseAPIURL}/auth/logout?nocache=` + (new Date()).getTime();
   }
 
