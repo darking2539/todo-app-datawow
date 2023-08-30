@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import './index.css';
 import { ProgressCard, TaskCard } from "../../components";
 import { CallGetDataList, CallDeleteData, CallAddData, CallEditData } from '../../API'
-import { useNavigate } from "react-router-dom";
-import Cookies from 'universal-cookie';
+// import { useNavigate } from "react-router-dom";
+// import Cookies from 'universal-cookie';
 
-const cookies = new Cookies();
+// const cookies = new Cookies();
 
 
 function Todos() {
@@ -13,7 +13,7 @@ function Todos() {
   const [taskData, setTaskData] = useState<any>([]);
   const [addValue, setAddValue] = useState<string>("");
   const [dropDownValue, setDropDownValue] = useState<any>();
-  const history = useNavigate();
+  // const history = useNavigate();
 
   const options = [
     { value: 'All', label: 'All' },
