@@ -53,6 +53,9 @@ function Todos() {
       })
 
       setTaskData(array);
+    }).catch((err)=> {
+      console.log(err);
+      fetchDataFromAPI();
     })
     
   }
@@ -136,10 +139,6 @@ function Todos() {
 
 
   useEffect(() => {
-    if (!cookies.get("jwtToken") ) {
-      history("/")
-    }
-
     fetchDataFromAPI();
     initStateData();
   }, [])
