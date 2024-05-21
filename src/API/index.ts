@@ -18,6 +18,10 @@ export const CallGetDataList = () => {
 
     var token = cookies.get('jwtToken')
 
+    if (token == "") {
+        token = localStorage.getItem('jwtToken');
+    }
+
     return AxiosFetch({
         method: 'GET',
         withCredentials: true,
@@ -32,6 +36,10 @@ export const CallDeleteData = (id: string) => {
 
     var token = cookies.get('jwtToken')
 
+    if (token == "") {
+        token = localStorage.getItem('jwtToken');
+    }
+
     return AxiosFetch({
         method: 'DELETE',
         withCredentials: true,
@@ -45,6 +53,10 @@ export const CallDeleteData = (id: string) => {
 export const CallAddData = (param: DataParam) => {
     
     var token = cookies.get('jwtToken')
+
+    if (token == "") {
+        token = localStorage.getItem('jwtToken');
+    }
     
     return AxiosFetch({
         method: 'POST',
@@ -66,6 +78,10 @@ export const CallAddData = (param: DataParam) => {
 export const CallEditData = (param: DataParam) => {
     
     var token = cookies.get('jwtToken')
+
+    if (token == "") {
+        token = localStorage.getItem('jwtToken');
+    }
 
     return AxiosFetch({
         withCredentials: true,
@@ -136,6 +152,10 @@ export const CallChangePassword = (param: changePasswordParam) => {
 export const CallGetUserDetail = () => {
 
     var token = cookies.get('jwtToken')
+
+    if (token == "") {
+        token = localStorage.getItem('jwtToken');
+    }
 
     return AxiosFetch({
         method: 'GET',

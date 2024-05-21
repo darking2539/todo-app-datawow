@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import queryString  from 'query-string';
+import { useSearchParams } from 'react-router-dom';
+import queryString from 'query-string';
 import { CallChangePassword, CallGetUserDetail } from '../../API';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
@@ -39,9 +40,11 @@ const Fab = (props: any) => {
 const ContentLayout = (props: any) => {
 
   const { children } = props;
+  const [params, setParams] = useSearchParams();
 
   const LogoutHandle = () => {
     cookies.remove("jwtToken");
+    localStorage.removeItem('jwtToken');
     window.location.href = `${baseAPIURL}/auth/logout?nocache=` + (new Date()).getTime();
   }
 
@@ -90,17 +93,28 @@ const ContentLayout = (props: any) => {
   }
 
   useEffect(() => {
+
+    var param = queryString.parse(location.search);
+
+    if (param.jwtToken != "") {
+      const token: string = param.jwtToken ? param.jwtToken.toString() : "";
+      cookies.set('jwtToken', param.jwtToken, { path: '/' });
   
-    var param = queryString.parse(location.search)
-    cookies.set('jwtToken', param.jwtToken, { path: '/' })
-    console.log(cookies.get('jwtToken'));
-    
-    CallGetUserDetail().then((resp: any) => {
-      console.log(resp);
-    }).catch((err: any) => {
-      console.log(err);
-      window.location.href = `${baseAPIURL}/auth/login`
-    })}, [])
+      localStorage.setItem('jwtToken', token);  
+      CallGetUserDetail().then((resp: any) => {
+        console.log(resp);
+        const searchParams = params.get("jwtToken");
+        if (searchParams) {
+          params.delete("jwtToken");
+          setParams(params);
+        }
+      }).catch((err: any) => {
+        console.log(err);
+        window.location.href = `${baseAPIURL}/auth/login`;
+      })
+    }
+
+  }, [])
 
   return (
     <div>
