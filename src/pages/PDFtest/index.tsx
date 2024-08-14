@@ -1,11 +1,28 @@
 import React, { useState, FormEvent, ChangeEvent, useRef } from 'react';
 import { pdfjs } from 'react-pdf';
-import { PDFDocument } from 'pdf-lib';
+//import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from'@cantoo/pdf-lib';
 
 // Import the styles
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+
+async function unlockPdf(pdfBlob: Blob, password: string): Promise<Blob> {
+    // Convert Blob to ArrayBuffer
+    const arrayBuffer = await pdfBlob.arrayBuffer();
+  
+    // Load the PDF
+    const pdfDoc = await PDFDocument.load(arrayBuffer, { password: password });
+  
+    // Serialize the PDF to bytes
+    const pdfBytes = await pdfDoc.save();
+  
+    // Convert the bytes to a Blob
+    const unlockedBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+  
+    return unlockedBlob;
+}
 
 const PDFViewerWithPassword: React.FC = () => {
     const [password, setPassword] = useState<string>('');
@@ -39,7 +56,6 @@ const PDFViewerWithPassword: React.FC = () => {
                 const loadingTask = pdfjs.getDocument({ data: new Uint8Array(fileReader.result as ArrayBuffer), password });
                 const pdf = await loadingTask.promise;
                 const pdfBytes = await pdf.getData();
-
                 //previewOnly
                 renderPdfOnCanvas(pdf);
                 setPdfData(pdfBytes);
@@ -91,6 +107,29 @@ const PDFViewerWithPassword: React.FC = () => {
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'DecryptedFile.pdf');
+
+            // Append to html link element page
+            document.body.appendChild(link);
+
+            // Start download
+            link.click();
+        } catch (error) {
+            setError('An error occurred while downloading the PDF.');
+        }
+    };
+
+    const downloadFileCryptoHandle = async () => {
+        if (!pdfData) {
+            setError('No file loaded or decrypted.');
+            return;
+        }
+        try {
+            const blob = new Blob([pdfData], { type: 'application/pdf' });
+            const decryptBlob = await unlockPdf(blob, password);
+            const url = window.URL.createObjectURL(decryptBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'FileCrypto.pdf');
 
             // Append to html link element page
             document.body.appendChild(link);
@@ -196,6 +235,7 @@ const PDFViewerWithPassword: React.FC = () => {
                     <h1 style={{ color: "red" }}>Password Correct!!</h1>
                     <button style={{marginTop: 10}} onClick={downloadFileHandle}>Download original pdf</button>
                     <button style={{marginTop: 10}} onClick={downloadFileDectyptHandle}>Download decrypted pdf</button>
+                    <button style={{marginTop: 10}} onClick={downloadFileCryptoHandle}>Download Crypto pdf</button>
                     <button style={{marginTop: 10}} onClick={downloadBlobHandle}>Download images (PNG)</button>
                     <h1 style={{ color: "red" }}>Preview</h1>
                     <canvas ref={canvasRef}></canvas>
