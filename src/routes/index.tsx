@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { LoginPage, RegisterPage, TodosPage, UnlockPDF } from '../pages'
+import { LoginPage, RegisterPage, TodosPage, UnlockPDF, PDFViewver } from '../pages'
 import { ContentLayout } from '../layouts'
 
 
@@ -13,6 +13,7 @@ const WebRoutes = () =>{
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage/>} />
         <Route path="/pdf" element={<UnlockPDF/>} />
+        <Route path="/pdf-viewver" element={<PDFViewver/>} />
       </Routes>
     );
   }
